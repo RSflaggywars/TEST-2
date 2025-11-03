@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Dashboard</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover { background: #45a049; }
+.application {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Application Dashboard</h1>
+    <p>Add your applications and see all entries live!</p>
+</header>
+
+<div class="container">
+    <h2>Create Application</h2>
+    <input type="text" id="appName" placeholder="Application Name">
+    <textarea id="appDesc" placeholder="Application Description"></textarea>
+    <button onclick="addApplication()">Submit Application</button>
+
+    <h2>All Applications</h2>
+    <div id="applicationsList"></div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+// 🔹 Firebase Configuration
+// Replace with your own Firebase config from your Firebase project
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Add application
+function addApplication() {
+    const name = document.getElementById('appName').value.trim() || "Anonymous";
+    const desc = document.getElementById('appDesc').value.trim();
+    if(desc === "") return;
+
+    const newApp = {
+        name,
+        description: desc,
+        timestamp: Date.now()
+    };
+
+    db.ref('applications').push(newApp);
+
+    document.getElementById('appName').value = "";
+    document.getElementById('appDesc').value = "";
+}
+
+// Display applications
+const listDiv = document.getElementById('applicationsList');
+db.ref('applications').on('value', snapshot => {
+    listDiv.innerHTML = "";
+    snapshot.forEach(child => {
+        const app = child.val();
+        const div = document.createElement('div');
+        div.classList.add('application');
+        div.innerHTML = `<strong>${app.name}</strong><br>${app.description}`;
+        listDiv.appendChild(div);
+    });
+});
+</script>
+
+</body>
+</html>
