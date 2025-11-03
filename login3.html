@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Multi-Section Dashboard</title>
+<style>
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f2f5;
+    scroll-behavior: smooth;
+}
+header {
+    background: linear-gradient(to right, #4CAF50, #81C784);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+header h1 {
+    margin: 0;
+}
+nav {
+    position: sticky;
+    top: 0;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+nav a {
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    display: block;
+}
+nav a:hover {
+    background-color: #575757;
+}
+section {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+h2 {
+    color: #4CAF50;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+.message {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+}
+#messages {
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fafafa;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+.card {
+    background: #e8f5e9;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: white;
+}
+
+/* Smooth scroll button */
+.top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.top-btn:hover { background: #45a049; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to the Multi-Section Dashboard</h1>
+    <p>All-in-one demo website</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#profile">Profile</a>
+    <a href="#guestbook">Talk to Owner</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#stats">Stats</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<!-- Home Section -->
+<section id="home">
+    <h2>Home</h2>
+    <p>Welcome! This is a fully-featured multi-section dashboard demo with interactive features.</p>
+</section>
+
+<!-- Profile Section -->
+<section id="profile">
+    <h2>Profile</h2>
+    <p>Username: <span id="profileUser">Owner</span></p>
+    <p>Email: demo@example.com</p>
+    <p>Role: Administrator</p>
+</section>
+
+<!-- Guestbook / Talk to Owner Section -->
+<section id="guestbook">
+    <h2>Talk to Owner</h2>
+    <input type="text" id="nameInput" placeholder="Your name">
+    <textarea id="messageInput" placeholder="Your message"></textarea>
+    <button onclick="sendMessage()">Send</button>
+    <div id="messages"></div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery">
+    <h2>Gallery</h2>
+    <div class="card-container">
+        <div class="card">Image 1 / Project 1</div>
+        <div class="card">Image 2 / Project 2</div>
+        <div class="card">Image 3 / Project 3</div>
+        <div class="card">Image 4 / Project 4</div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section id="stats">
+    <h2>Stats</h2>
+    <div class="card-container">
+        <div class="card">Users Online: 24</div>
+        <div class="card">Messages Sent: 150</div>
+        <div class="card">Projects Completed: 12</div>
+        <div class="card">Active Sessions: 5</div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <h2>Contact</h2>
+    <p>If you want to reach out, you can email me at <a href="mailto:owner@example.com">owner@example.com</a></p>
+</section>
+
+<footer>
+    © 2025 Multi-Section Dashboard
+</footer>
+
+<button class="top-btn" onclick="scrollToTop()">↑</button>
+
+<script>
+// --- Guestbook Functionality ---
+let messages = [];
+function sendMessage() {
+    const name = document.getElementById("nameInput").value.trim() || "Anonymous";
+    const text = document.getElementById("messageInput").value.trim();
+    if(text === "") return;
+    messages.push({name, text});
+    document.getElementById("messageInput").value = "";
+    renderMessages();
+}
+function renderMessages() {
+    const messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML = "";
+    messages.forEach(msg => {
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.textContent = `${msg.name}: ${msg.text}`;
+        messagesDiv.appendChild(div);
+    });
+}
+
+// --- Scroll to top ---
+function scrollToTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+
+</body>
+</html>
